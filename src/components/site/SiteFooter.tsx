@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import logo from "@/assets/snapcut-logo.png.asset.json";
+const logoSrc = "/images/snapcut-logo.png";
 
 const groups = [
   {
@@ -34,7 +34,7 @@ export function SiteFooter() {
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-14 md:grid-cols-4">
         <div>
           <Link to="/" className="flex items-center gap-2.5">
-            <img src={logo.url} alt="SnapCut AI" className="h-9 w-9 rounded-lg" />
+            <img src={logoSrc} alt="SnapCut AI" className="h-9 w-9 rounded-lg" />
             <span className="font-display text-lg font-bold">SnapCut AI</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm text-muted-foreground">

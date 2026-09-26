@@ -17,7 +17,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading } from "@/components/site/Section";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/snapcut-logo.png.asset.json";
+
+const logoSrc = "/images/snapcut-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -525,7 +526,7 @@ function Index() {
                         <Upload className="h-5 w-5 animate-bounce" />
                       </div>
                     ) : (
-                      <img src={logo.url} alt="" className="h-10 w-10 rounded-lg" />
+                      <img src={logoSrc} alt="" className="h-10 w-10 rounded-lg" />
                     )}
                     <div className="flex-1">
                       <p className="text-sm font-medium">

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/snapcut-logo.png.asset.json";
+
+const logoSrc = "/images/snapcut-logo.png";
 
 const nav = [
   { to: "/features", label: "Features" },
@@ -21,7 +22,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <img src={logo.url} alt="SnapCut AI" className="h-9 w-9 rounded-lg" />
+          <img src={logoSrc} alt="SnapCut AI" className="h-9 w-9 rounded-lg" />
           <span className="font-display text-lg font-bold tracking-tight">SnapCut AI</span>
         </Link>
 
