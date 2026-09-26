@@ -25,28 +25,32 @@ export const Route = createFileRoute("/terms")({
 
 const sections = [
   {
-    title: "Your account",
-    body: "You are responsible for keeping your login credentials and API keys secure. One account is for one organisation; sharing keys outside your organisation is not permitted.",
+    title: "Use of SnapCut AI",
+    body: "SnapCut AI is a tool for background removal and image-processing workflows. You are responsible for using it lawfully, for having the rights to upload the images you send to the service, and for keeping your account access and API credentials secure.",
   },
   {
-    title: "Acceptable use",
-    body: "Do not upload content you do not have the rights to process, or content that is unlawful. We may suspend accounts that abuse the service or attempt to bypass rate limits.",
+    title: "User responsibilities",
+    body: "Do not upload content that is unlawful, infringing, harmful, or otherwise prohibited by applicable law. The service is not intended for unlawful, abusive, fraudulent, or deceptive use, or for bypassing the intended rate limits or processing rules.",
   },
   {
-    title: "Credits and subscriptions",
-    body: "Free accounts receive 5 images per day. Pro subscriptions renew monthly until cancelled. Credit packs do not expire and are consumed before plan quota.",
+    title: "Content and output",
+    body: "The images you upload may be processed by the SnapCut AI workflow and returned as edited output files. You remain responsible for the content you upload and for verifying that the results are suitable for your use case.",
   },
   {
-    title: "Refunds",
-    body: "Failed jobs are never charged and any credit consumed is returned automatically. Subscription refunds are handled case by case within 7 days of a charge.",
+    title: "Payments, subscriptions and credits",
+    body: "The terms for pricing, plan access, and credit usage are defined in the pricing page and your payment provider checkout flow. SnapCut AI may offer subscriptions, credit packs, or usage-based access depending on the product configuration and backend setup.",
   },
   {
-    title: "Availability",
-    body: "We target 99.5% monthly uptime. Planned maintenance is announced in advance. The service is provided without warranty beyond that commitment.",
+    title: "Refunds and cancellations",
+    body: "Refunds and cancellation rights are governed by the SnapCut AI refund and cancellation policy and by the actual payment/plan configuration you purchase. We do not mark a payment as successful without backend verification, and any disputed or failed payment should be reviewed through the support contact method.",
   },
   {
-    title: "Changes",
-    body: "We may update these terms; material changes are announced by email at least 14 days before they take effect.",
+    title: "Service availability and liability",
+    body: "SnapCut AI aims to provide a reliable service, but online software may be interrupted, restricted, or subject to maintenance. The service is provided on an as-is basis, and liability should be limited to the extent permitted by applicable law. Add your final legal wording and business-specific limitations before publishing this page publicly.",
+  },
+  {
+    title: "Changes and contact",
+    body: "SnapCut AI may update these terms and policies over time. When changes are made, the updated wording should be published on the relevant site pages and communicated via the support/contact route or other appropriate channel. If you need help interpreting any term, use the contact page.",
   },
 ];
 
@@ -66,6 +70,18 @@ function TermsPage() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{section.body}</p>
             </article>
           ))}
+        </div>
+
+        <div className="mx-auto mt-8 flex max-w-3xl flex-col justify-center gap-3 sm:flex-row">
+          <a href="/privacy" className="text-sm text-primary underline-offset-4 hover:underline">
+            Read Privacy Policy
+          </a>
+          <a href="/refund-policy" className="text-sm text-primary underline-offset-4 hover:underline">
+            Read Refund Policy
+          </a>
+          <a href="/contact" className="text-sm text-primary underline-offset-4 hover:underline">
+            Contact support
+          </a>
         </div>
       </Section>
     </>

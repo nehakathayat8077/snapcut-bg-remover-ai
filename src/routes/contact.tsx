@@ -36,7 +36,7 @@ const schema = z.object({
   message: z.string().trim().min(10, "Tell us a little more (10+ characters)").max(1000),
 });
 
-function ContactPage() {
+export default function ContactPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
 

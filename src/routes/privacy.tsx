@@ -26,27 +26,27 @@ export const Route = createFileRoute("/privacy")({
 const sections = [
   {
     title: "What we collect",
-    body: "Your account email, plan and credit balance; the images you upload for processing; and payment records created by our payment provider. We do not collect analytics that identify you personally.",
+    body: "SnapCut AI may process the information you provide when using the service, including account contact details, uploaded images, processed result files, payment references, and messages sent through the contact form. We do not intentionally use this information for advertising or personalized tracking.",
   },
   {
     title: "How images are handled",
-    body: "Uploads are stored temporarily so they can be processed and returned to you. Both the original and the resulting cutout are deleted automatically within 24 hours. We never use customer images to train models.",
+    body: "Uploaded images and processed outputs are used to perform the background-removal workflow. The application currently keeps files only as long as needed for processing and may delete them automatically after a short retention period. The exact retention schedule should be confirmed in your production setup and backend config.",
+  },
+  {
+    title: "Third-party services",
+    body: "The service may use external providers for automation, processing, or payment handling such as n8n, cloud storage or delivery endpoints, and Razorpay. Those services process data on our behalf under their own terms and security practices, and we only send the minimum details needed for the request to work.",
   },
   {
     title: "Payments",
-    body: "Card and UPI details are handled entirely by our payment provider. SnapCut AI never sees or stores your full payment credentials — only the transaction reference, amount and status.",
+    body: "Payment details are handled by the payment provider and not stored directly in the frontend. SnapCut AI only keeps the payment status, amount, and reference information needed to manage the order and support the customer.",
   },
   {
-    title: "Security",
-    body: "All traffic uses HTTPS. Secrets are encrypted at rest, access to production data is restricted and audited, and API keys can be rotated or revoked by you at any time.",
-  },
-  {
-    title: "Your rights",
-    body: "You can export your account data, delete your account, or request removal of any record at any time. Deleting an account removes stored metadata within 30 days.",
+    title: "Cookies and browser storage",
+    body: "The app may use minimal browser cookies or local storage for functional preferences, such as UI state or temporary session behaviour. We do not rely on advertising or tracking cookies for marketing purposes.",
   },
   {
     title: "Contact",
-    body: "Privacy questions can be sent through our contact page and are answered within one business day.",
+    body: "If you need to confirm how your data is handled, use the contact page and include your request details. Add your actual response time and business contact method here before publishing this page for customer use.",
   },
 ];
 
@@ -66,6 +66,18 @@ function PrivacyPage() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{section.body}</p>
             </article>
           ))}
+        </div>
+
+        <div className="mx-auto mt-8 flex max-w-3xl flex-col justify-center gap-3 sm:flex-row">
+          <a href="/terms" className="text-sm text-primary underline-offset-4 hover:underline">
+            Read Terms & Conditions
+          </a>
+          <a href="/refund-policy" className="text-sm text-primary underline-offset-4 hover:underline">
+            Read Refund Policy
+          </a>
+          <a href="/contact" className="text-sm text-primary underline-offset-4 hover:underline">
+            Contact support
+          </a>
         </div>
       </Section>
     </>

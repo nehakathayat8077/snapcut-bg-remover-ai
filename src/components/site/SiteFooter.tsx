@@ -8,7 +8,8 @@ const groups = [
     links: [
       { to: "/features", label: "Features" },
       { to: "/pricing", label: "Pricing" },
-      { to: "/api-docs", label: "API Docs" },
+      { to: "/api-docs", label: "API" },
+      { to: "/integrations", label: "Integrations" },
     ],
   },
   {
@@ -16,14 +17,21 @@ const groups = [
     links: [
       { to: "/about", label: "About" },
       { to: "/blog", label: "Blog" },
-      { to: "/contact", label: "Contact" },
+      { to: "/careers", label: "Careers" },
+      { to: "/contact", label: "Contact / Support" },
     ],
   },
   {
     title: "Legal",
     links: [
       { to: "/privacy", label: "Privacy Policy" },
-      { to: "/terms", label: "Terms of Service" },
+      { to: "/terms", label: "Terms & Conditions" },
+      { to: "/refund-policy", label: "Refund & Cancellation Policy" },
+      { to: "/shipping-delivery", label: "Shipping & Delivery Policy" },
+      { to: "/cookie-policy", label: "Cookie Policy" },
+      { to: "/payment-success", label: "Payment Success" },
+      { to: "/payment-failed", label: "Payment Failed" },
+      { to: "/payment-pending", label: "Payment Pending" },
     ],
   },
 ] as const;

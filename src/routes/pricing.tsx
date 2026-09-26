@@ -45,6 +45,7 @@ const plans = [
     ],
     cta: "Start free",
     highlighted: false,
+    destination: "/contact",
   },
   {
     name: "Pro Monthly",
@@ -60,6 +61,7 @@ const plans = [
     ],
     cta: "Go Pro",
     highlighted: true,
+    destination: "/payment-pending",
   },
   {
     name: "Credit Packs",
@@ -74,6 +76,7 @@ const plans = [
     ],
     cta: "Buy credits",
     highlighted: false,
+    destination: "/payment-pending",
   },
 ];
 
@@ -145,7 +148,7 @@ function PricingPage() {
                 className="mt-8"
                 asChild
               >
-                <Link to="/contact">{plan.cta}</Link>
+                <Link to={plan.destination}>{plan.cta}</Link>
               </Button>
             </article>
           ))}
