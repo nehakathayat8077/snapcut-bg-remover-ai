@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading } from "@/components/site/Section";
+import { saveProcessedImage } from "@/lib/payment-store";
 import { cn } from "@/lib/utils";
 
 const logoSrc = "/images/snapcut-logo.png";
@@ -170,6 +171,7 @@ function Index() {
 
   const handleGenerate = useCallback(async () => {
     if (!originalFile || !previewUrl) return;
+    const startedAt = Date.now();
     setIsProcessing(true);
     setProcessedUrl(null);
     setProcessError(null);
@@ -221,9 +223,20 @@ function Index() {
         return;
       }
 
-      setProcessedUrl(toDisplayImageUrl(resultUrl));
+      const normalizedResultUrl = toDisplayImageUrl(resultUrl);
+      setProcessedUrl(normalizedResultUrl);
+      saveProcessedImage({
+        fileName: fileName ?? "snapcut-image",
+        status: "completed",
+        outputUrl: normalizedResultUrl,
+        processingMs: Date.now() - startedAt,
+      });
     } catch (err) {
       console.error("Remove background webhook failed:", err);
+      saveProcessedImage({
+        fileName: fileName ?? "snapcut-image",
+        status: "failed",
+      });
       setProcessError(
         err instanceof Error
           ? `Could not process the image: ${err.message}`

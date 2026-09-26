@@ -16,7 +16,9 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FeaturesRouteImport } from './routes/features'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as IntegrationsRouteImport } from './routes/integrations'
 import { Route as PaymentFailedRouteImport } from './routes/payment-failed'
 import { Route as PaymentPendingRouteImport } from './routes/payment-pending'
@@ -63,9 +65,19 @@ const CookiePolicyRoute = CookiePolicyRouteImport.update({
   path: '/cookie-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FeaturesRoute = FeaturesRouteImport.update({
   id: '/features',
   path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntegrationsRoute = IntegrationsRouteImport.update({
@@ -127,7 +139,9 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/dashboard': typeof DashboardRoute
   '/features': typeof FeaturesRoute
+  '/history': typeof HistoryRoute
   '/integrations': typeof IntegrationsRoute
   '/payment-failed': typeof PaymentFailedRoute
   '/payment-pending': typeof PaymentPendingRoute
@@ -147,7 +161,9 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/dashboard': typeof DashboardRoute
   '/features': typeof FeaturesRoute
+  '/history': typeof HistoryRoute
   '/integrations': typeof IntegrationsRoute
   '/payment-failed': typeof PaymentFailedRoute
   '/payment-pending': typeof PaymentPendingRoute
@@ -168,7 +184,9 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/dashboard': typeof DashboardRoute
   '/features': typeof FeaturesRoute
+  '/history': typeof HistoryRoute
   '/integrations': typeof IntegrationsRoute
   '/payment-failed': typeof PaymentFailedRoute
   '/payment-pending': typeof PaymentPendingRoute
@@ -190,7 +208,9 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookie-policy'
+    | '/dashboard'
     | '/features'
+    | '/history'
     | '/integrations'
     | '/payment-failed'
     | '/payment-pending'
@@ -210,7 +230,9 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookie-policy'
+    | '/dashboard'
     | '/features'
+    | '/history'
     | '/integrations'
     | '/payment-failed'
     | '/payment-pending'
@@ -230,7 +252,9 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookie-policy'
+    | '/dashboard'
     | '/features'
+    | '/history'
     | '/integrations'
     | '/payment-failed'
     | '/payment-pending'
@@ -251,7 +275,9 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
+  DashboardRoute: typeof DashboardRoute
   FeaturesRoute: typeof FeaturesRoute
+  HistoryRoute: typeof HistoryRoute
   IntegrationsRoute: typeof IntegrationsRoute
   PaymentFailedRoute: typeof PaymentFailedRoute
   PaymentPendingRoute: typeof PaymentPendingRoute
@@ -315,11 +341,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CookiePolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/features': {
       id: '/features'
       path: '/features'
       fullPath: '/features'
       preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/integrations': {
@@ -403,7 +443,9 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   CookiePolicyRoute: CookiePolicyRoute,
+  DashboardRoute: DashboardRoute,
   FeaturesRoute: FeaturesRoute,
+  HistoryRoute: HistoryRoute,
   IntegrationsRoute: IntegrationsRoute,
   PaymentFailedRoute: PaymentFailedRoute,
   PaymentPendingRoute: PaymentPendingRoute,

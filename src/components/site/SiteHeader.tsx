@@ -9,6 +9,7 @@ const logoSrc = "/images/snapcut-logo.png";
 const nav = [
   { to: "/features", label: "Features" },
   { to: "/pricing", label: "Pricing" },
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/api-docs", label: "API Docs" },
   { to: "/blog", label: "Blog" },
   { to: "/about", label: "About" },

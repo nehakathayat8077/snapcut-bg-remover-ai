@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 import { PageHero, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
+import { readPaymentHistory } from "@/lib/payment-store";
 
 export const Route = createFileRoute("/payment-success")({
   head: () => ({
@@ -18,6 +20,29 @@ export const Route = createFileRoute("/payment-success")({
 });
 
 function PaymentSuccessPage() {
+  const [payment, setPayment] = useState<{
+    planName: string;
+    orderId: string;
+    paymentId: string;
+    amount: number;
+    status: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const history = readPaymentHistory();
+    const latest = history.find((item) => item.status === "paid") ?? null;
+
+    if (latest) {
+      setPayment({
+        planName: latest.planName,
+        orderId: latest.orderId,
+        paymentId: latest.paymentId,
+        amount: latest.amount,
+        status: latest.status,
+      });
+    }
+  }, []);
+
   return (
     <>
       <PageHero
@@ -33,28 +58,30 @@ function PaymentSuccessPage() {
           </div>
           <h2 className="text-2xl font-semibold">Your payment has been confirmed</h2>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Replace the placeholder details below with your real order summary once the backend is
-            connected. Keep the final status driven by server-side verification.
+            The transaction below reflects the last verified payment saved for the current user in the app.
           </p>
 
           <div className="mt-6 space-y-3 rounded-xl border border-border/60 bg-background/40 p-4 text-left text-sm text-muted-foreground">
             <p>
-              <span className="font-medium text-foreground">Plan:</span> Pro Monthly
+              <span className="font-medium text-foreground">Plan:</span> {payment?.planName ?? "—"}
             </p>
             <p>
-              <span className="font-medium text-foreground">Order ID:</span> placeholder-order-id
+              <span className="font-medium text-foreground">Order ID:</span> {payment?.orderId ?? "—"}
             </p>
             <p>
-              <span className="font-medium text-foreground">Amount:</span> ₹799
+              <span className="font-medium text-foreground">Payment ID:</span> {payment?.paymentId ?? "—"}
+            </p>
+            <p>
+              <span className="font-medium text-foreground">Amount:</span> {payment ? `₹${(payment.amount / 100).toFixed(2)}` : "—"}
             </p>
           </div>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button variant="hero" asChild>
-              <Link to="/pricing">Back to pricing</Link>
+              <Link to="/dashboard">View dashboard</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link to="/contact">Contact support</Link>
+              <Link to="/pricing">Back to pricing</Link>
             </Button>
           </div>
         </div>

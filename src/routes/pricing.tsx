@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  createRazorpayOrder,
+  openRazorpayCheckout,
+  verifyRazorpayPayment,
+} from "@/lib/razorpay";
+import { saveVerifiedPayment } from "@/lib/payment-store";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -46,6 +52,7 @@ const plans = [
     cta: "Start free",
     highlighted: false,
     destination: "/contact",
+    planKey: null,
   },
   {
     name: "Pro Monthly",
@@ -61,7 +68,8 @@ const plans = [
     ],
     cta: "Go Pro",
     highlighted: true,
-    destination: "/payment-pending",
+    destination: "/pricing",
+    planKey: "pro-monthly",
   },
   {
     name: "Credit Packs",
@@ -76,9 +84,10 @@ const plans = [
     ],
     cta: "Buy credits",
     highlighted: false,
-    destination: "/payment-pending",
+    destination: "/pricing",
+    planKey: "credit-packs",
   },
-];
+] as const;
 
 const faqs = [
   {
@@ -100,6 +109,68 @@ const faqs = [
 ];
 
 function PricingPage() {
+  const navigate = useNavigate();
+
+  async function handleCheckout(planKey: "pro-monthly" | "credit-packs") {
+    try {
+      const order = await createRazorpayOrder({ plan: planKey });
+
+      await openRazorpayCheckout({
+        amount: order.amount,
+        currency: order.currency,
+        name: "SnapCut AI",
+        description:
+          planKey === "pro-monthly" ? "SnapCut Pro Monthly" : "SnapCut Credit Pack",
+        orderId: order.id,
+        plan: planKey,
+        onSuccess: async (payment) => {
+          try {
+            const verification = await verifyRazorpayPayment(payment);
+
+            if (verification.status === "paid") {
+              const record = saveVerifiedPayment({
+                planKey,
+                planName: planKey === "pro-monthly" ? "Pro Monthly" : "Credit Pack",
+                amount: planKey === "pro-monthly" ? 79900 : 49900,
+                currency: "INR",
+                orderId: payment.razorpay_order_id ?? "",
+                paymentId: payment.razorpay_payment_id ?? "",
+                receipt: `snapcut-${planKey}`,
+                creditsAwarded: planKey === "credit-packs" ? 500 : 0,
+              });
+
+              if (record) {
+                console.info("Saved verified payment transaction", record);
+              }
+
+              navigate({ to: "/payment-success" });
+              return;
+            }
+
+            if (verification.status === "pending") {
+              navigate({ to: "/payment-pending" });
+              return;
+            }
+
+            navigate({ to: "/payment-failed" });
+          } catch (error) {
+            console.error(error);
+            navigate({ to: "/payment-failed" });
+          }
+        },
+        onFailure: () => {
+          navigate({ to: "/payment-failed" });
+        },
+        onDismiss: () => {
+          navigate({ to: "/payment-pending" });
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      navigate({ to: "/payment-failed" });
+    }
+  }
+
   return (
     <>
       <PageHero
@@ -142,14 +213,25 @@ function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Button
-                variant={plan.highlighted ? "hero" : "heroOutline"}
-                size="xl"
-                className="mt-8"
-                asChild
-              >
-                <Link to={plan.destination}>{plan.cta}</Link>
-              </Button>
+              {plan.planKey ? (
+                <Button
+                  variant={plan.highlighted ? "hero" : "heroOutline"}
+                  size="xl"
+                  className="mt-8"
+                  onClick={() => handleCheckout(plan.planKey as "pro-monthly" | "credit-packs")}
+                >
+                  {plan.cta}
+                </Button>
+              ) : (
+                <Button
+                  variant={plan.highlighted ? "hero" : "heroOutline"}
+                  size="xl"
+                  className="mt-8"
+                  asChild
+                >
+                  <Link to={plan.destination}>{plan.cta}</Link>
+                </Button>
+              )}
             </article>
           ))}
         </div>

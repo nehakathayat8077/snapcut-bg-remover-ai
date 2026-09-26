@@ -1,6 +1,6 @@
 export type RazorpayOrderRequest = {
   plan: string;
-  amount: number;
+  amount?: number;
   currency?: string;
   receipt?: string;
   metadata?: Record<string, string | number | boolean | null>;
@@ -84,7 +84,11 @@ export async function createRazorpayOrder(request: RazorpayOrderRequest): Promis
   return (await response.json()) as RazorpayOrderResponse;
 }
 
-export async function verifyRazorpayPayment(payment: RazorpayPaymentData): Promise<{ ok: boolean }> {
+export async function verifyRazorpayPayment(payment: RazorpayPaymentData): Promise<{
+  ok: boolean;
+  status: "paid" | "pending" | "failed";
+  message?: string;
+}> {
   const response = await fetch("/api/payments/verify", {
     method: "POST",
     headers: {
@@ -93,12 +97,17 @@ export async function verifyRazorpayPayment(payment: RazorpayPaymentData): Promi
     body: JSON.stringify(payment),
   });
 
+  const body = (await response.json()) as { ok?: boolean; status?: string; message?: string };
+
   if (!response.ok) {
-    const text = await response.text();
-    throw new Error(text || "Payment verification failed.");
+    throw new Error(body.message || "Payment verification failed.");
   }
 
-  return (await response.json()) as { ok: boolean };
+  return {
+    ok: body.ok ?? false,
+    status: (body.status as "paid" | "pending" | "failed") ?? "failed",
+    message: body.message,
+  };
 }
 
 export function getRazorpayPublicKey(): string | undefined {
