@@ -1,8 +1,9 @@
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
 
 const logoSrc = "/images/snapcut-logo.png";
 
@@ -18,6 +19,18 @@ const nav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const { session, signOut, loading } = useAuth();
+
+  const handleLogout = async () => {
+    const result = await signOut();
+    if (result.error) {
+      console.error(result.error);
+      return;
+    }
+    void navigate({ to: "/" });
+    setOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
@@ -41,12 +54,25 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/contact">Sign in</Link>
-          </Button>
-          <Button variant="hero" size="sm" asChild>
-            <Link to="/pricing">Start free</Link>
-          </Button>
+          {!loading && session ? (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/dashboard">Dashboard</Link>
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/login">Log in</Link>
+              </Button>
+              <Button variant="hero" size="sm" asChild>
+                <Link to="/signup">Create account</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <button
@@ -74,11 +100,24 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Button variant="hero" className="mt-2" asChild>
-              <Link to="/pricing" onClick={() => setOpen(false)}>
-                Start free
-              </Link>
-            </Button>
+            {!loading && session ? (
+              <Button variant="hero" className="mt-2" onClick={handleLogout}>
+                Log out
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" className="mt-2" asChild>
+                  <Link to="/login" onClick={() => setOpen(false)}>
+                    Log in
+                  </Link>
+                </Button>
+                <Button variant="hero" className="mt-2" asChild>
+                  <Link to="/signup" onClick={() => setOpen(false)}>
+                    Create account
+                  </Link>
+                </Button>
+              </>
+            )}
           </nav>
         </div>
       )}

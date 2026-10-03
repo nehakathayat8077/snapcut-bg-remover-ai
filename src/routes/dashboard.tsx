@@ -1,11 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, CreditCard, Download, FileText, KeyRound, ImageUp, LayoutGrid, Settings, Upload, UserCircle2 } from "lucide-react";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { ArrowUpRight, CreditCard, Download, FileText, KeyRound, ImageUp, LayoutGrid, LogOut, Settings, Upload, UserCircle2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
 import { getDashboardSummary, getImageSummary, readProcessedImages, type DashboardSummary, type ProcessedImageRecord } from "@/lib/payment-store";
 
 export const Route = createFileRoute("/dashboard")({
+  beforeLoad: async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      throw redirect({ to: "/login" });
+    }
+  },
   head: () => ({
     meta: [
       { title: "Dashboard — SnapCut AI" },
@@ -51,15 +62,34 @@ function formatProcessingTime(ms: number | null): string {
 function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary>(defaultSummary);
   const [recentImages, setRecentImages] = useState<ProcessedImageRecord[]>([]);
+  const navigate = useNavigate();
+  const { session, loading, signOut } = useAuth();
 
   useEffect(() => {
     setSummary(getDashboardSummary());
     setRecentImages(readProcessedImages());
   }, []);
 
+  const handleLogout = async () => {
+    const result = await signOut();
+    if (result.error) {
+      console.error(result.error);
+      return;
+    }
+    void navigate({ to: "/" });
+  };
+
   const imageSummary = useMemo(() => getImageSummary(), [recentImages]);
   const recentPayment = summary.paymentHistory[0] ?? null;
   const creditsPurchased = summary.paymentHistory.reduce((sum, payment) => sum + payment.creditsAwarded, 0);
+
+  if (loading) {
+    return <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Loading your dashboard…</div>;
+  }
+
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 lg:py-10">
@@ -106,6 +136,11 @@ function DashboardPage() {
               <span className="font-medium text-foreground">{summary.creditsAvailable}</span>
             </div>
           </div>
+
+          <Button variant="outline" className="mt-6 w-full justify-center gap-2" onClick={handleLogout}>
+            <LogOut className="h-4 w-4" />
+            Log out
+          </Button>
         </aside>
 
         <main className="space-y-6">

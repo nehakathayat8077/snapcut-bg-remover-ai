@@ -20,6 +20,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as IntegrationsRouteImport } from './routes/integrations'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PaymentFailedRouteImport } from './routes/payment-failed'
 import { Route as PaymentPendingRouteImport } from './routes/payment-pending'
 import { Route as PaymentSuccessRouteImport } from './routes/payment-success'
@@ -27,6 +28,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as ShippingDeliveryRouteImport } from './routes/shipping-delivery'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as TermsRouteImport } from './routes/terms'
 
@@ -85,6 +87,11 @@ const IntegrationsRoute = IntegrationsRouteImport.update({
   path: '/integrations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PaymentFailedRoute = PaymentFailedRouteImport.update({
   id: '/payment-failed',
   path: '/payment-failed',
@@ -120,6 +127,11 @@ const ShippingDeliveryRoute = ShippingDeliveryRouteImport.update({
   path: '/shipping-delivery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -143,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/features': typeof FeaturesRoute
   '/history': typeof HistoryRoute
   '/integrations': typeof IntegrationsRoute
+  '/login': typeof LoginRoute
   '/payment-failed': typeof PaymentFailedRoute
   '/payment-pending': typeof PaymentPendingRoute
   '/payment-success': typeof PaymentSuccessRoute
@@ -150,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/shipping-delivery': typeof ShippingDeliveryRoute
+  '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
 }
@@ -165,6 +179,7 @@ export interface FileRoutesByTo {
   '/features': typeof FeaturesRoute
   '/history': typeof HistoryRoute
   '/integrations': typeof IntegrationsRoute
+  '/login': typeof LoginRoute
   '/payment-failed': typeof PaymentFailedRoute
   '/payment-pending': typeof PaymentPendingRoute
   '/payment-success': typeof PaymentSuccessRoute
@@ -172,6 +187,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/shipping-delivery': typeof ShippingDeliveryRoute
+  '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
 }
@@ -188,6 +204,7 @@ export interface FileRoutesById {
   '/features': typeof FeaturesRoute
   '/history': typeof HistoryRoute
   '/integrations': typeof IntegrationsRoute
+  '/login': typeof LoginRoute
   '/payment-failed': typeof PaymentFailedRoute
   '/payment-pending': typeof PaymentPendingRoute
   '/payment-success': typeof PaymentSuccessRoute
@@ -195,6 +212,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/shipping-delivery': typeof ShippingDeliveryRoute
+  '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
 }
@@ -212,6 +230,7 @@ export interface FileRouteTypes {
     | '/features'
     | '/history'
     | '/integrations'
+    | '/login'
     | '/payment-failed'
     | '/payment-pending'
     | '/payment-success'
@@ -219,6 +238,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refund-policy'
     | '/shipping-delivery'
+    | '/signup'
     | '/support'
     | '/terms'
   fileRoutesByTo: FileRoutesByTo
@@ -234,6 +254,7 @@ export interface FileRouteTypes {
     | '/features'
     | '/history'
     | '/integrations'
+    | '/login'
     | '/payment-failed'
     | '/payment-pending'
     | '/payment-success'
@@ -241,6 +262,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refund-policy'
     | '/shipping-delivery'
+    | '/signup'
     | '/support'
     | '/terms'
   id:
@@ -256,6 +278,7 @@ export interface FileRouteTypes {
     | '/features'
     | '/history'
     | '/integrations'
+    | '/login'
     | '/payment-failed'
     | '/payment-pending'
     | '/payment-success'
@@ -263,6 +286,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/refund-policy'
     | '/shipping-delivery'
+    | '/signup'
     | '/support'
     | '/terms'
   fileRoutesById: FileRoutesById
@@ -279,6 +303,7 @@ export interface RootRouteChildren {
   FeaturesRoute: typeof FeaturesRoute
   HistoryRoute: typeof HistoryRoute
   IntegrationsRoute: typeof IntegrationsRoute
+  LoginRoute: typeof LoginRoute
   PaymentFailedRoute: typeof PaymentFailedRoute
   PaymentPendingRoute: typeof PaymentPendingRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
@@ -286,6 +311,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
   ShippingDeliveryRoute: typeof ShippingDeliveryRoute
+  SignupRoute: typeof SignupRoute
   SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
 }
@@ -369,6 +395,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IntegrationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/payment-failed': {
       id: '/payment-failed'
       path: '/payment-failed'
@@ -418,6 +451,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShippingDeliveryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/support': {
       id: '/support'
       path: '/support'
@@ -447,6 +487,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeaturesRoute: FeaturesRoute,
   HistoryRoute: HistoryRoute,
   IntegrationsRoute: IntegrationsRoute,
+  LoginRoute: LoginRoute,
   PaymentFailedRoute: PaymentFailedRoute,
   PaymentPendingRoute: PaymentPendingRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
@@ -454,6 +495,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RefundPolicyRoute: RefundPolicyRoute,
   ShippingDeliveryRoute: ShippingDeliveryRoute,
+  SignupRoute: SignupRoute,
   SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
 }
