@@ -1,8 +1,16 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, UserCircle2, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/lib/auth";
 
 const logoSrc = "/images/snapcut-logo.png";
@@ -59,9 +67,24 @@ export function SiteHeader() {
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/dashboard">Dashboard</Link>
               </Button>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                Log out
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="Open user menu"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:bg-secondary"
+                  >
+                    <UserCircle2 className="h-4 w-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    {session.user?.email ?? "Signed in"}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>
@@ -101,9 +124,14 @@ export function SiteHeader() {
               </Link>
             ))}
             {!loading && session ? (
-              <Button variant="hero" className="mt-2" onClick={handleLogout}>
-                Log out
-              </Button>
+              <>
+                <div className="mt-2 rounded-md border border-border bg-secondary/50 px-3 py-2 text-sm text-muted-foreground">
+                  {session.user?.email ?? "Signed in"}
+                </div>
+                <Button variant="hero" className="mt-2" onClick={handleLogout}>
+                  Log out
+                </Button>
+              </>
             ) : (
               <>
                 <Button variant="ghost" className="mt-2" asChild>
